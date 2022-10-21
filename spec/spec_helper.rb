@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "nubank"
+require "nubank_sdk"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

@@ -1,17 +1,17 @@
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "nubank/version"
+require "nubank_sdk/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "nubank"
-  spec.version       = Nubank::VERSION
-  spec.authors       = ["viserion77"]
+  spec.name          = "nubank_sdk"
+  spec.version       = NubankSdk::VERSION
+  spec.authors       = ["Viserion77"]
   spec.email         = ["jeferson.a.oficial@gmail.com"]
 
   spec.summary       = %q{A gem to make it ease to monitorize your Nubank account.}
   spec.description   = %q{Monitorize balances, recent transactions, credit limit etc...}
-  spec.homepage      = "https://github.com/Viserion77/nubank"
+  spec.homepage      = "https://github.com/Viserion77/nubank_sdk"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.

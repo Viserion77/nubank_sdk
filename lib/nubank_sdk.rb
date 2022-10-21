@@ -1,6 +1,6 @@
-require "nubank/version"
+require "nubank_sdk/version"
 
-module Nubank
+module NubankSdk
   class Error < StandardError; end
   
   class Connection

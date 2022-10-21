@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    nubank (0.1.0)
+    nubank_sdk (0.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -27,7 +27,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.17)
-  nubank!
+  nubank_sdk!
   rake (~> 10.0)
   rspec (~> 3.0)
 

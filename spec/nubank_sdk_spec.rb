@@ -1,6 +1,6 @@
-RSpec.describe Nubank do
+RSpec.describe NubankSdk do
   it "has a version number" do
-    expect(Nubank::VERSION).not_to be nil
+    expect(NubankSdk::VERSION).not_to be nil
   end
 
   context "when validating connection" do
