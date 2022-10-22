@@ -1,4 +1,4 @@
-# NubankSdk
+# NubankSdk (Work in progress)
 
 A gem to make it ease to monitorize your Nubank account.
 
@@ -33,3 +33,5 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/viserion77/nubank_sdk.
+
+This project was based on the python implementation in this project: [andreroggeri/pynubank](https://github.com/andreroggeri/pynubank)
