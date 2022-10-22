@@ -5,6 +5,7 @@
     "Nubank"
   ],
   "conventionalCommits.scopes": [
+    "certificates",
     "version"
   ]
 }
