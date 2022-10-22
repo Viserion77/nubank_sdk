@@ -3,5 +3,8 @@
     "faraday",
     "nubank",
     "Nubank"
+  ],
+  "conventionalCommits.scopes": [
+    "version"
   ]
 }
