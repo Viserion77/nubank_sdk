@@ -2,11 +2,13 @@
   "cSpell.words": [
     "faraday",
     "nubank",
-    "Nubank"
+    "Nubank",
+    "pkcs"
   ],
   "conventionalCommits.scopes": [
     "api routes",
     "certificates",
+    "auth",
     "client",
     "version"
   ]
