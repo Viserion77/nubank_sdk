@@ -5,6 +5,7 @@
     "Nubank"
   ],
   "conventionalCommits.scopes": [
+    "api routes",
     "certificates",
     "client",
     "version"

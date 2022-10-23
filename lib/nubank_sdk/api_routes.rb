@@ -51,10 +51,7 @@ module NubankSdk
     end
 
     def connection
-      @connection ||= Faraday.new(url: DISCOVERY_URI) do |faraday|
-        faraday.adapter(*@connection_adapter) if @connection_adapter
-        faraday.adapter Faraday.default_adapter unless @connection_adapter
-      end
+      @connection ||= Client::HTTP.new(DISCOVERY_URI, @connection_adapter)
     end
   end
 end
