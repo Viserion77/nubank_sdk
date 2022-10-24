@@ -13,6 +13,10 @@ module NubankSdk
       @adapter = adapter
     end
 
+    def api_routes
+      @api_routes
+    end
+
     def certificate
       @certificate ||= NubankSdk::Certificate.new(@cpf, @key)
     end
@@ -95,14 +99,12 @@ module NubankSdk
       bills_url_keys = ['bills_summary']
       customer_url_keys = ['customer']
       account_url_keys = ['account']
-
-      @api_routes.add_entrypoint(:ssl, :revoke_token, links[:revoke_token][:href])
-      @api_routes.add_entrypoint(:ssl, :query, links[:ghostflame][:href])
-      @api_routes.add_entrypoint(:ssl, :feed, find_url(feed_url_keys, links))
-      @api_routes.add_entrypoint(:ssl, :bills, find_url(bills_url_keys, links))
-      @api_routes.add_entrypoint(:ssl, :customer, find_url(customer_url_keys, links))
-      @api_routes.add_entrypoint(:ssl, :account, find_url(account_url_keys, links))
-      @api_routes
+      @api_routes.add_entrypoint(path: :ssl, entrypoint: :revoke_token, url: links[:revoke_token][:href])
+      @api_routes.add_entrypoint(path: :ssl, entrypoint: :query, url: links[:ghostflame][:href])
+      @api_routes.add_entrypoint(path: :ssl, entrypoint: :feed, url: find_url(feed_url_keys, links))
+      @api_routes.add_entrypoint(path: :ssl, entrypoint: :bills, url: find_url(bills_url_keys, links))
+      @api_routes.add_entrypoint(path: :ssl, entrypoint: :customer, url: find_url(customer_url_keys, links))
+      @api_routes.add_entrypoint(path: :ssl, entrypoint: :account, url: find_url(account_url_keys, links))
     end
 
     def find_url(keys, list)

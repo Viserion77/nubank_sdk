@@ -1,3 +1,4 @@
+require "nubank_sdk/account"
 require "nubank_sdk/api_routes"
 require "nubank_sdk/auth"
 require "nubank_sdk/certificate"

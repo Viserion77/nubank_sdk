@@ -30,8 +30,8 @@ module NubankSdk
     end
 
     class HTTPS
-      def initialize(certificate, adapter = nil)
-        client_cert = OpenSSL::X509::Certificate.new(certificate.certificate),
+      def initialize(certificate, adapter = nil)      
+        client_cert = OpenSSL::X509::Certificate.new(certificate.certificate)
         client_key = OpenSSL::PKey::RSA.new(certificate.key)
 
         @connection = Faraday.new(ssl: { client_cert: client_cert, client_key: client_key}) do |faraday|
@@ -40,9 +40,16 @@ module NubankSdk
         end
       end
 
-      def post(url, body)
+      def post(url, body, headers = {})
         @connection.post(url) do |req|
           req.headers['Content-Type'] = 'application/json'
+          req.headers['X-Correlation-Id'] = '772428d8-f0ee-43d6-8093-a13de3c9ce96'
+          req.headers['User-Agent'] = "NubankSdk Client (#{NubankSdk::VERSION})"
+
+          headers.each do |key, value|
+            req.headers[key] = value
+          end
+
           req.body = body.to_json
         end
       end

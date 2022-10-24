@@ -77,6 +77,14 @@ RSpec.describe NubankSdk::Client do
 
         expect(response.status).to eq(200)
       end
+
+      it "posts a request with the given headers" do
+        stubs.post('/foo') { [200, {}, { foo: 'bar' }.to_json] }
+
+        response = subject.post('/foo', { foo: 'bar' }, { 'X-Custom-Header' => 'custom' })
+
+        expect(response.headers['X-Custom-Header']).to eq('custom')
+      end
     end
 
     after { clear_certifications_folder }
