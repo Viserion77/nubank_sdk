@@ -1,3 +1,5 @@
+![Gem](https://img.shields.io/gem/dt/nubank_sdk?color=%23701516&logo=ruby&logoColor=%23701516&style=for-the-badge)
+
 # NubankSdk (Work in progress)
 
 A gem to make it ease to monitorize your Nubank account.
