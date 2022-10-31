@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module NubankSdk
   class Auth
     attr_reader :refresh_token, :refresh_before, :access_token

@@ -1,9 +1,8 @@
-# frozen_string_literal: true
-
 RSpec.describe NubankSdk::Certificate do
+  subject(:certificate_instance) { described_class.new(cpf) }
+
   let(:cpf) { '12345678909' }
   let(:key) { OpenSSL::PKey::RSA.new 2048 }
-  subject { described_class.new(cpf) }
 
   let(:certificate) do
     OpenSSL::X509::Certificate.new.tap do |cert|
@@ -17,29 +16,34 @@ RSpec.describe NubankSdk::Certificate do
       ef = OpenSSL::X509::ExtensionFactory.new
       ef.subject_certificate = cert
       ef.issuer_certificate = cert
-      cert.add_extension(ef.create_extension('basicConstraints', 'CA:TRUE', true))
+      cert.add_extension(
+        ef.create_extension(
+          'basicConstraints',
+          'CA:TRUE',
+          true
+        )
+      )
       cert.add_extension(ef.create_extension('subjectKeyIdentifier', 'hash'))
       cert.sign(key, OpenSSL::Digest::SHA256.new)
     end
   end
   let(:certificate_path) { "#{NubankSdk::Certificate::FILES_PATH}#{cpf}.p12" }
 
-  before { clear_certifications_folder}
+  before { clear_certifications_folder }
 
   describe '#process_decoded' do
-
     it 'creates a new file.p12' do
-      subject.process_decoded(key, certificate)
+      certificate_instance.process_decoded(key, certificate)
 
       expect(File).to exist(certificate_path)
     end
   end
 
   describe '#encoded' do
-    before { subject.process_decoded(key, certificate) }
+    before { certificate_instance.process_decoded(key, certificate) }
 
     it 'returns a OpenSSL::PKCS12' do
-      expect(subject.encoded).to be_a(OpenSSL::PKCS12)
+      expect(certificate_instance.encoded).to be_a(OpenSSL::PKCS12)
     end
   end
 

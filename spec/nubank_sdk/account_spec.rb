@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe NubankSdk::Account do
   describe '.all' do
     let(:cpf) { '12345678909' }
@@ -13,13 +11,15 @@ RSpec.describe NubankSdk::Account do
       api
     end
 
-    subject { described_class.new(
-      connection: NubankSdk::Client::HTTPS.new(
-        NubankSdk::Certificate.new(cpf).encoded,
-        [:test, stubs]
-      ),
-      api_routes: api_routes
-    ) }
+    subject {
+      described_class.new(
+        connection: NubankSdk::Client::HTTPS.new(
+          NubankSdk::Certificate.new(cpf).encoded,
+          [:test, stubs]
+        ),
+        api_routes: api_routes
+      )
+    }
 
     before do
       clear_certifications_folder
@@ -45,7 +45,7 @@ RSpec.describe NubankSdk::Account do
     context 'when the user is authenticated' do
       describe '#balance' do
         it 'returns the account balance' do
-          stubs.post('https://aa.aa/api/ghostflame_teste') { [200, {}, {data: {viewer: {savingsAccount: {currentSavingsBalance: {netAmount: 100}}}}}.to_json] }
+          stubs.post('https://aa.aa/api/ghostflame_teste') { [200, {}, { data: { viewer: { savingsAccount: { currentSavingsBalance: { netAmount: 100 } } } } }.to_json] }
 
           expect(subject.balance).to eq(100)
         end

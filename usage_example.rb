@@ -7,7 +7,7 @@ password = 'dracarys'
 
 # request an email code
 account_email = user.auth.request_email_code(password)
-  
+
 # get the email code from the user
 puts "Enter the code sent to #{account_email}: "
 email_code = gets.chomp

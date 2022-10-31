@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe NubankSdk::ApiRoutes do
   let(:stubs)  { Faraday::Adapter::Test::Stubs.new }
   let(:uri) { described_class::DISCOVERY_URI }
@@ -33,10 +31,10 @@ RSpec.describe NubankSdk::ApiRoutes do
   describe '#add_entrypoint' do
     subject { described_class.new }
 
-    it "adds a new entrypoint to url discovery map" do
+    it 'adds a new entrypoint to url discovery map' do
       subject.add_entrypoint(path: :ssl, entrypoint: :query, url: 'localhost:3000/api/app/query')
 
-      expect(subject.entrypoint(path: :ssl, entrypoint: :query)).to eq("localhost:3000/api/app/query")
+      expect(subject.entrypoint(path: :ssl, entrypoint: :query)).to eq('localhost:3000/api/app/query')
     end
   end
-end 
+end

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe NubankSdk::Auth do
   let(:cpf) { '1235678909'}
   let(:key) { OpenSSL::PKey::RSA.new 2048 }

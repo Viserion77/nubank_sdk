@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module NubankSdk
   class User
     def initialize(cpf:, connection_adapter: nil)

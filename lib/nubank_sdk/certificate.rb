@@ -1,10 +1,8 @@
-# frozen_string_literal: true
-
 require 'openssl'
 
 module NubankSdk
   class Certificate
-    FILES_PATH = './certificates/'
+    FILES_PATH = './certificates/'.freeze
 
     def initialize(cpf)
       @cpf = cpf
@@ -34,7 +32,7 @@ module NubankSdk
     end
 
     def create_pkcs12_from(key, certificate)
-      OpenSSL::PKCS12.create("password", "key", key, certificate)
+      OpenSSL::PKCS12.create('password', 'key', key, certificate)
     end
 
     def encode(certificate)

@@ -1,11 +1,9 @@
-# frozen_string_literal: true
-
 require 'json'
 
 RSpec.describe NubankSdk::Client do
   describe '.get_body' do
-    it "returns the body parsed as json" do
-      response = double(body: '{"foo": "bar"}')
+    it 'returns the body parsed as json' do
+      response = instance_double('response', body: '{"foo": "bar"}')
 
       body = described_class.get_body(response)
 
@@ -13,34 +11,36 @@ RSpec.describe NubankSdk::Client do
     end
   end
 
-  context 'HTTP' do
+  context 'when use HTTP' do
+    subject(:client) { described_class::HTTP.new(base_url, [:test, stubs]) }
+
     let(:base_url) { 'http://example.com' }
     let(:stubs) { Faraday::Adapter::Test::Stubs.new }
-    
-    subject { described_class::HTTP.new(base_url, [:test, stubs]) }
 
     describe '#post' do
-      it "posts a request to the given path" do
+      it 'posts a request to the given path' do
         stubs.post('/foo') { [200, {}, { foo: 'bar' }.to_json] }
 
-        response = subject.post('/foo', { foo: 'bar' })
+        response = client.post('/foo', { foo: 'bar' })
 
         expect(response.status).to eq(200)
       end
     end
 
     describe '#get' do
-      it "gets a request to the given path" do
+      it 'gets a request to the given path' do
         stubs.get('/foo') { [200, {}, { foo: 'bar' }.to_json] }
 
-        response = subject.get('/foo')
+        response = client.get('/foo')
 
         expect(response.status).to eq(200)
       end
     end
   end
 
-  context 'HTTPS' do
+  context 'when use HTTPS' do
+    subject(:client) { described_class::HTTPS.new(certificate, [:test, stubs]) }
+
     let(:key) { OpenSSL::PKey::RSA.new 2048 }
     let(:cpf) { '12345678909' }
     let(:certificate) do
@@ -56,7 +56,13 @@ RSpec.describe NubankSdk::Client do
         ef = OpenSSL::X509::ExtensionFactory.new
         ef.subject_certificate = cert
         ef.issuer_certificate = cert
-        cert.add_extension(ef.create_extension('basicConstraints', 'CA:TRUE', true))
+        cert.add_extension(
+          ef.create_extension(
+            'basicConstraints',
+            'CA:TRUE',
+            true
+          )
+        )
         cert.add_extension(ef.create_extension('subjectKeyIdentifier', 'hash'))
         cert.sign(key, OpenSSL::Digest::SHA256.new)
       end
@@ -67,29 +73,27 @@ RSpec.describe NubankSdk::Client do
     let(:certificate_path) { "#{NubankSdk::Certificate::FILES_PATH}#{cpf}.p12" }
     let(:stubs) { Faraday::Adapter::Test::Stubs.new }
 
-    subject { described_class::HTTPS.new(certificate, [:test, stubs]) }
-
     describe '#post' do
-      it "posts a request to the given path" do
+      it 'posts a request to the given path' do
         stubs.post('/foo') { [200, {}, { foo: 'bar' }.to_json] }
 
-        response = subject.post('/foo', { foo: 'bar' })
+        response = client.post('/foo', { foo: 'bar' })
 
         expect(response.status).to eq(200)
       end
 
-      it "posts a request with the given headers" do
+      it 'posts a request with the given headers' do
         stubs.post('/foo') { [200, {}, { foo: 'bar' }.to_json] }
-        subject.headers = { 'X-Custom-Header' => 'custom' }
+        client.headers = { 'X-Custom-Header' => 'custom' }
 
-        subject.post('/foo', { foo: 'bar' })
+        client.post('/foo', { foo: 'bar' })
 
-        expect(subject.headers).to eq({ 'X-Custom-Header' => 'custom' })
+        expect(client.headers).to eq({ 'X-Custom-Header' => 'custom' })
       end
     end
 
     after { clear_certifications_folder }
-  
+
     def clear_certifications_folder
       File.delete(certificate_path) if File.exist?(certificate_path)
     end
