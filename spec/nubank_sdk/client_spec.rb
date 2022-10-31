@@ -60,8 +60,8 @@ RSpec.describe NubankSdk::Client do
         cert.add_extension(ef.create_extension('subjectKeyIdentifier', 'hash'))
         cert.sign(key, OpenSSL::Digest::SHA256.new)
       end
-      certification = NubankSdk::Certificate.new(cpf, key)
-      certification.process_decoded(dummy_certification)
+      certification = NubankSdk::Certificate.new(cpf)
+      certification.process_decoded(key, dummy_certification)
       certification.encoded
     end
     let(:certificate_path) { "#{NubankSdk::Certificate::FILES_PATH}#{cpf}.p12" }
@@ -80,10 +80,11 @@ RSpec.describe NubankSdk::Client do
 
       it "posts a request with the given headers" do
         stubs.post('/foo') { [200, {}, { foo: 'bar' }.to_json] }
+        subject.headers = { 'X-Custom-Header' => 'custom' }
 
-        response = subject.post('/foo', { foo: 'bar' }, { 'X-Custom-Header' => 'custom' })
+        subject.post('/foo', { foo: 'bar' })
 
-        expect(response.headers['X-Custom-Header']).to eq('custom')
+        expect(subject.headers).to eq({ 'X-Custom-Header' => 'custom' })
       end
     end
 

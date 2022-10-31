@@ -6,15 +6,14 @@ module NubankSdk
   class Certificate
     FILES_PATH = './certificates/'
 
-    def initialize(cpf, key)
+    def initialize(cpf)
       @cpf = cpf
-      @key = key
     end
 
-    def process_decoded(certificate)
+    def process_decoded(key, certificate)
       encoded = encode certificate
 
-      p12 = create_pkcs12_from encoded
+      p12 = create_pkcs12_from(key, encoded)
       save p12
     end
 
@@ -34,8 +33,8 @@ module NubankSdk
       end
     end
 
-    def create_pkcs12_from(certificate)
-      OpenSSL::PKCS12.create("password", "key", @key, certificate)
+    def create_pkcs12_from(key, certificate)
+      OpenSSL::PKCS12.create("password", "key", key, certificate)
     end
 
     def encode(certificate)

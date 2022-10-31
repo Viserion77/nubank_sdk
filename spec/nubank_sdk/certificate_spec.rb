@@ -3,7 +3,7 @@
 RSpec.describe NubankSdk::Certificate do
   let(:cpf) { '12345678909' }
   let(:key) { OpenSSL::PKey::RSA.new 2048 }
-  subject { described_class.new(cpf, key) }
+  subject { described_class.new(cpf) }
 
   let(:certificate) do
     OpenSSL::X509::Certificate.new.tap do |cert|
@@ -29,14 +29,14 @@ RSpec.describe NubankSdk::Certificate do
   describe '#process_decoded' do
 
     it 'creates a new file.p12' do
-      subject.process_decoded(certificate)
+      subject.process_decoded(key, certificate)
 
       expect(File).to exist(certificate_path)
     end
   end
 
   describe '#encoded' do
-    before { subject.process_decoded(certificate) }
+    before { subject.process_decoded(key, certificate) }
 
     it 'returns a OpenSSL::PKCS12' do
       expect(subject.encoded).to be_a(OpenSSL::PKCS12)

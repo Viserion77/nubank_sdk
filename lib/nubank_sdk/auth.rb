@@ -4,21 +4,16 @@ module NubankSdk
   class Auth
     attr_reader :refresh_token, :refresh_before, :access_token
 
-    def initialize(cpf:, device_id:, key: nil, api_routes: nil, adapter: nil)
+    def initialize(cpf:, device_id: nil, api_routes: nil, connection_adapter: nil)
       @cpf = cpf
-      @device_id = device_id
-      @key = key || generate_key
+      @device_id = device_id || generate_device_id
       @api_routes = api_routes || NubankSdk::ApiRoutes.new
 
-      @adapter = adapter
-    end
-
-    def api_routes
-      @api_routes
+      @connection_adapter = connection_adapter
     end
 
     def certificate
-      @certificate ||= NubankSdk::Certificate.new(@cpf, @key)
+      @certificate ||= NubankSdk::Certificate.new(@cpf)
     end
 
     def authenticate_with_certificate(password)
@@ -51,7 +46,7 @@ module NubankSdk
       )
 
       response_data = Client.get_body(response)
-      certificate.process_decoded response_data[:certificate]
+      certificate.process_decoded(key, response_data[:certificate])
     end
 
     private
@@ -74,7 +69,7 @@ module NubankSdk
       {
         login: @cpf,
         password: password,
-        public_key: @key.public_key.to_pem,
+        public_key: key.public_key.to_pem,
         device_id: @device_id,
         model: "NubankSdk Client (#@device_id)",
       }
@@ -110,28 +105,36 @@ module NubankSdk
     def find_url(keys, list)
       links_keys = list.keys
 
-      keys.each do |key|
-        return list[key]['href'] if links_keys.include?(key)
+      keys.each do |url_key|
+        return list[url_key]['href'] if links_keys.include?(url_key)
       end
       ''
     end
 
-    def prepare_connections
+    def prepare_default_connection
       uri, @gen_certificate_path = @api_routes.entrypoint(
         path: :app,
         entrypoint: :gen_certificate,
         type: :splitted
       )
 
-      Client::HTTP.new(uri, @adapter)
+      Client::HTTP.new(uri, @connection_adapter)
     end
 
     def default_connection
-      @default_connection ||= prepare_connections
+      @default_connection ||= prepare_default_connection
     end
 
     def ssl_connection
-      @ssl_connection ||= Client::HTTPS.new(certificate.encoded, @adapter)
+      @ssl_connection ||= Client::HTTPS.new(certificate.encoded, @connection_adapter)
+    end
+
+    def key
+      @key ||= generate_key
+    end
+
+    def generate_device_id
+      SecureRandom.uuid.split('-').last
     end
   end
 end

@@ -22,20 +22,27 @@ RSpec.describe NubankSdk::Auth do
       cert.sign(key, OpenSSL::Digest::SHA256.new)
     end
   end
+  let(:api_routes) do
+    api = NubankSdk::ApiRoutes.new
+    api.add_entrypoint(path: :app, entrypoint: :token, url: 'https://aa.aa/api/token_teste')
+    api.add_entrypoint(path: :app, entrypoint: :gen_certificate, url: 'https://aa.aa/api/login_teste')
+    api
+  end
 
-  subject { described_class.new(cpf: cpf, key: key, device_id: '909876543210', adapter: [:test, stubs]) }
+  before do
+    allow(subject).to receive(:generate_key).and_return(key)
+  end
+
+  subject { described_class.new(cpf: cpf, device_id: '909876543210', connection_adapter: [:test, stubs], api_routes: api_routes) }
 
   describe '#authenticate_with_certificate' do
     before do
       clear_certifications_folder
-      certification = NubankSdk::Certificate.new(cpf, key)
-      certification.process_decoded(dummy_certification)
+      certification = NubankSdk::Certificate.new(cpf)
+      certification.process_decoded(key, dummy_certification)
     end
 
     it 'returns a valid token' do
-      api_routes = double(entrypoint: nil, add_entrypoint: nil)
-      allow(NubankSdk::ApiRoutes).to receive(:new).and_return(api_routes)
-      allow(api_routes).to receive(:entrypoint).with(path: :app, entrypoint: :token).and_return('https://aa.aa/api/token_teste')
       stubs.post('https://aa.aa/api/token_teste') { [200, {}, { access_token: '1234567890', _links: {
         events: { href: 'https://aa.aa/api/events_teste' },
         customer: { href: 'https://aa.aa/api/customer_teste' },
@@ -54,9 +61,6 @@ RSpec.describe NubankSdk::Auth do
 
   describe '#request_email_code' do
     it 'returns a valid token' do
-      api_routes = double(entrypoint: nil, add_entrypoint: nil)
-      allow(NubankSdk::ApiRoutes).to receive(:new).and_return(api_routes)
-      allow(api_routes).to receive(:entrypoint).with(path: :app, entrypoint: :gen_certificate, type: :splitted).and_return('https://aa.aa/api/login_teste')
       stubs.post('https://aa.aa/api/login_teste') { [200, {'WWW-Authenticate': 'sent_to=vi****@se**.com'}, {}.to_json] }
 
       email = subject.request_email_code('dracarys')
@@ -66,9 +70,6 @@ RSpec.describe NubankSdk::Auth do
 
   describe '#exchange_certs' do
     it 'returns a valid token' do
-      api_routes = double(entrypoint: nil, add_entrypoint: nil)
-      allow(NubankSdk::ApiRoutes).to receive(:new).and_return(api_routes)
-      allow(api_routes).to receive(:entrypoint).with(path: :app, entrypoint: :gen_certificate, type: :splitted).and_return('https://aa.aa/api/login_teste')
       stubs.post('https://aa.aa/api/login_teste') { [200, {}, {certificate: dummy_certification}.to_json] }
 
       subject.exchange_certs('77', 'dracarys')

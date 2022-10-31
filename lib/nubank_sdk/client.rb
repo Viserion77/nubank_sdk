@@ -10,10 +10,10 @@ module NubankSdk
     end
 
     class HTTP
-      def initialize(base_url, adapter = nil)
+      def initialize(base_url, connection_adapter = nil)
         @connection = Faraday.new(url: base_url) do |faraday|
-          faraday.adapter *adapter if adapter
-          faraday.adapter Faraday.default_adapter unless adapter
+          faraday.adapter *connection_adapter if connection_adapter
+          faraday.adapter Faraday.default_adapter unless connection_adapter
         end
       end
 
@@ -30,25 +30,27 @@ module NubankSdk
     end
 
     class HTTPS
-      def initialize(certificate, adapter = nil)      
+      attr_accessor :headers
+
+      def initialize(certificate, connection_adapter = nil)
         client_cert = OpenSSL::X509::Certificate.new(certificate.certificate)
         client_key = OpenSSL::PKey::RSA.new(certificate.key)
 
         @connection = Faraday.new(ssl: { client_cert: client_cert, client_key: client_key}) do |faraday|
-          faraday.adapter *adapter if adapter
-          faraday.adapter Faraday.default_adapter unless adapter
+          faraday.adapter *connection_adapter if connection_adapter
+          faraday.adapter Faraday.default_adapter unless connection_adapter
         end
       end
 
-      def post(url, body, headers = {})
+      def post(url, body)
         @connection.post(url) do |req|
           req.headers['Content-Type'] = 'application/json'
           req.headers['X-Correlation-Id'] = '772428d8-f0ee-43d6-8093-a13de3c9ce96'
           req.headers['User-Agent'] = "NubankSdk Client (#{NubankSdk::VERSION})"
 
-          headers.each do |key, value|
-            req.headers[key] = value
-          end
+          @headers.each do |header_key, value|
+            req.headers[header_key] = value
+          end unless @headers.nil?
 
           req.body = body.to_json
         end
