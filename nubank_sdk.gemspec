@@ -26,6 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "rubocop", "~> 0.57.2"
   spec.add_development_dependency "rubocop-rspec", "~> 1.27.0"
+  spec.add_development_dependency "factory_bot", "~> 4.8.2"
 
   spec.add_dependency "faraday", "~> 0.15.0"
   spec.add_dependency "json", "~> 2.1.0"
