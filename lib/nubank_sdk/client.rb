@@ -3,11 +3,22 @@ require 'json'
 
 module NubankSdk
   module Client
+    #
+    # Parse the response body symbolizing keys
+    #
+    # @param [Faraday::Response] response
+    #
+    # @return [Hash]
     def self.get_body(response)
       JSON.parse(response.body, symbolize_names: true)
     end
 
     class HTTP
+      #
+      # create a new connection with the given url in Faraday
+      #
+      # @param [String] base_url
+      # @param [[Symbol, Faraday::Adapter::Test::Stubs]] connection_adapter
       def initialize(base_url, connection_adapter = nil)
         @connection = Faraday.new(url: base_url) do |faraday|
           faraday.adapter(*connection_adapter) if connection_adapter
@@ -15,6 +26,13 @@ module NubankSdk
         end
       end
 
+      #
+      # make put on connection with the given path
+      #
+      # @param [String] path
+      # @param [Hash] body
+      #
+      # @return [Faraday::Response]
       def post(path, body)
         @connection.post(path) do |req|
           req.headers['Content-Type'] = 'application/json'
@@ -22,6 +40,12 @@ module NubankSdk
         end
       end
 
+      #
+      # make get on connection with the given path
+      #
+      # @param [String] path
+      #
+      # @return [Faraday::Response]
       def get(path)
         @connection.get(path)
       end
@@ -30,6 +54,11 @@ module NubankSdk
     class HTTPS
       attr_accessor :headers
 
+      #
+      # Create a new instance of Faraday::Connection with client certificate
+      #
+      # @param [OpenSSL::PKCS12] certificate
+      # @param [[Symbol, Faraday::Adapter::Test::Stubs]] connection_adapter
       def initialize(certificate, connection_adapter = nil)
         client_cert = OpenSSL::X509::Certificate.new(certificate.certificate)
         client_key = OpenSSL::PKey::RSA.new(certificate.key)
@@ -43,6 +72,13 @@ module NubankSdk
         @headers = {}
       end
 
+      #
+      # Make a post request on connection
+      #
+      # @param [String] url
+      # @param [Hash] body
+      #
+      # @return [Faraday::Response]
       def post(url, body)
         @connection.post(url) do |req|
           req.headers['Content-Type'] = 'application/json'

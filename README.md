@@ -24,7 +24,43 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require 'nubank_sdk'
+
+# instance a nubank account object
+user = NubankSdk::User.new(cpf: '12345678909')
+password = 'dracarys'
+```
+
+> First time?
+>
+> authenticate the account
+>
+> ```ruby
+> # request an email code
+> account_email = user.auth.request_email_code(password)
+> 
+> # get the email code from the user
+> puts "Enter the code sent to #{account_email}: "
+> email_code = gets.chomp
+> user.auth.exchange_certs(email_code, password)
+> ```
+>
+---
+>
+> Has a certificate?
+>
+> generate a access token
+>
+> ```ruby
+> user.auth.authenticate_with_certificate(password)
+> ```
+
+get the account balance
+
+```ruby
+user.account.balance # => 77.0
+```
 
 ## Development
 

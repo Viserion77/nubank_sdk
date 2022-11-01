@@ -10,12 +10,24 @@ module NubankSdk
       ssl: ''
     }.freeze
 
+    #
+    # Controller for the ApiRoutes class
+    #
+    # @param [Hash] url_discovery_map
+    # @param [[Symbol, Faraday::Adapter::Test::Stubs]] connection_adapter
     def initialize(url_discovery_map: {}, connection_adapter: nil)
       @url_discovery_map = url_discovery_map
       @connection_adapter = connection_adapter
     end
 
-    # types: :splitted, :full
+    #
+    # Return the url for a given path and entrypoint
+    #
+    # @param [Symbol] path
+    # @param [Symbol] entrypoint
+    # @param [Symbol] type, :splitted or :full
+    #
+    # @return [String, Array]
     def entrypoint(path: :default, entrypoint:, type: :full)
       discovery(path) if @url_discovery_map[path].nil?
 
@@ -27,6 +39,14 @@ module NubankSdk
       [url_splitted.first, "/api#{url_splitted.last}"]
     end
 
+    #
+    # Add new entrypoint to url discovery map
+    #
+    # @param [Symbol] path
+    # @param [Symbol] entrypoint
+    # @param [String] url
+    #
+    # @return [Hash]
     def add_entrypoint(path: :default, entrypoint:, url:)
       path_map = @url_discovery_map[path] || {}
       path_map[entrypoint] = url
@@ -36,6 +56,12 @@ module NubankSdk
 
     private
 
+    # @!visibility private
+    # Request to the nubank api to get the url discovery map
+    #
+    # @param [Symbol] path
+    #
+    # @return [Hash]
     def discovery(path = :default)
       return @url_discovery_map[path] if @url_discovery_map[path]
 
@@ -45,6 +71,10 @@ module NubankSdk
       @url_discovery_map[path] = url_map
     end
 
+    # @!visibility private
+    # Return a default connection with the nubank api
+    #
+    # @return [Client::HTTP]
     def connection
       @connection ||= Client::HTTP.new(DISCOVERY_URI, @connection_adapter)
     end

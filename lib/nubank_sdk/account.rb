@@ -1,10 +1,19 @@
 module NubankSdk
   class Account
+    #
+    # Returns the account statement
+    #
+    # @param [NubankSdk::Client::HTTPS] connection
+    # @param [NubankSdk::ApiRoutes] api_routes
     def initialize(connection:, api_routes:)
       @connection = connection
       @api_routes = api_routes
     end
 
+    #
+    # Returns the account balance
+    #
+    # @return [Float]
     def balance
       query_url = @api_routes.entrypoint(path: :ssl, entrypoint: :query)
 
