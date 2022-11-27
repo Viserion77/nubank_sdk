@@ -6,10 +6,16 @@ Bundler::GemHelper.install_tasks
 
 task :default => :spec
 
-task :gem_bump do
+task :start_new_release do
   version = ENV['VERSION'] || 'patch'
 
   sh 'gem install gem-release'
   sh "gem bump --version #{version}"
   sh 'git push'
+
+  Rake::Task[:build].invoke
+
+  version_tag = "v#{NubankSdk::VERSION}"
+  sh %W[git tag -m Version\ #{gemspec.version} #{version_tag}]
+  sh 'git push --tags'
 end
