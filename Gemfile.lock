@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     nubank_sdk (0.5.1)
-      faraday (~> 0.15.0)
+      faraday (~> 2.7.1)
       json (~> 2.3)
 
 GEM
@@ -18,14 +18,15 @@ GEM
     diff-lcs (1.5.0)
     factory_bot (4.8.2)
       activesupport (>= 3.0.0)
-    faraday (0.15.4)
-      multipart-post (>= 1.2, < 3)
+    faraday (2.7.1)
+      faraday-net_http (>= 2.0, < 3.1)
+      ruby2_keywords (>= 0.0.4)
+    faraday-net_http (3.0.2)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     jaro_winkler (1.5.4)
-    json (2.6.1)
+    json (2.6.2)
     minitest (5.15.0)
-    multipart-post (2.2.3)
     parallel (1.19.2)
     parser (3.1.2.1)
       ast (~> 2.4.1)
@@ -56,6 +57,7 @@ GEM
     rubocop-rspec (1.27.0)
       rubocop (>= 0.56.0)
     ruby-progressbar (1.11.0)
+    ruby2_keywords (0.0.5)
     thread_safe (0.3.6)
     tzinfo (1.2.10)
       thread_safe (~> 0.1)
