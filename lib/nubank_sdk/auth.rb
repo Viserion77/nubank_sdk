@@ -1,3 +1,5 @@
+require 'securerandom'
+
 module NubankSdk
   class Auth
     attr_reader :refresh_token, :refresh_before, :access_token
