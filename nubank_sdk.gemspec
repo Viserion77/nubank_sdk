@@ -30,5 +30,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "yard", "~> 0.9.12"
 
   spec.add_dependency "faraday", "~> 0.15.0"
-  spec.add_dependency "json", "~> 2.1.0"
+  spec.add_dependency "json", "~> 2.3"
 end
