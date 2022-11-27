@@ -16,7 +16,7 @@ task :start_new_release do
   Rake::Task[:build].invoke
   
   sh 'git add .'
-  sh "git commit -m \"build(version): bookmark bump #{bump}\"" 
+  sh "git commit -m \"build(version): :bookmark: bump #{bump}\"" 
   sh 'git push'
 
   version = NubankSdk::VERSION
