@@ -12,6 +12,7 @@
     "auth",
     "client",
     "version",
-    "account"
+    "account",
+    "github"
   ]
 }
