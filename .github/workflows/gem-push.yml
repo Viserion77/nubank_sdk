@@ -27,6 +27,8 @@ jobs:
         touch $HOME/.gem/credentials
         chmod 0600 $HOME/.gem/credentials
         printf -- "---\n:github: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
+        git config --global user.email "jeferson.a.oficial@gmail.com"
+        git config --global user.name "viserion77"
         gem install gem-release
         gem bump --version minor
         rake release
