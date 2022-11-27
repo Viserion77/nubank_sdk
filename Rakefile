@@ -7,12 +7,12 @@ Bundler::GemHelper.install_tasks
 task :default => :spec
 
 task :start_new_release do
-  # TODO: add guard clean
   bump = ENV['BUMP'] || 'patch'
 
   sh 'gem install gem-release'
   sh "gem bump --version #{bump}"
   
+  sh 'bundle'
   Rake::Task[:build].invoke
   
   sh 'git add .'
