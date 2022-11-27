@@ -31,7 +31,11 @@ jobs:
         git config --global user.name "viserion77"
         gem install gem-release
         gem bump --version minor
+        bundle
+        git push
         rake release
+        git commit -m "build(version): :bookmark: bump minor"
+        git push
         gem push --KEY github --host https://rubygems.pkg.github.com/${OWNER} pkg/*.gem
       env:
         GEM_HOST_API_KEY: "Bearer ${{secrets.GITHUB_TOKEN}}"
