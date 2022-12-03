@@ -31,6 +31,14 @@ module NubankSdk
     end
 
     #
+    # Returns instance of credit methods
+    #
+    # @return [NubankSdk::Credit]
+    def credit
+      @credit ||= NubankSdk::Credit.new(connection: connection, api_routes: api_routes)
+    end
+
+    #
     # An instance of apis routes
     #
     # @return [NubankSdk::ApiRoutes]
