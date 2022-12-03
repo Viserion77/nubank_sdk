@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    nubank_sdk (0.5.2)
+    nubank_sdk (0.6.0)
       faraday (~> 2.7.1)
       json (~> 2.3)
 

@@ -92,6 +92,23 @@ module NubankSdk
           req.body = body.to_json
         end
       end
+
+      #
+      # Make a get request on connection
+      #
+      # @param [String] url
+      #
+      # @return [Faraday::Response]
+      def get(url)
+        @connection.get(url) do |req|
+          req.headers['X-Correlation-Id'] = '772428d8-f0ee-43d6-8093-a13de3c9ce96'
+          req.headers['User-Agent'] = "NubankSdk Client (#{NubankSdk::VERSION})"
+
+          @headers.each do |header_key, value|
+            req.headers[header_key] = value
+          end
+        end
+      end
     end
   end
 end
