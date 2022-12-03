@@ -145,10 +145,10 @@ module NubankSdk
     #
     # @return [NubankSdk::ApiRoutes] the api routes with the new links
     def update_api_routes(links)
-      feed_url_keys = ['events', 'magnitude']
-      bills_url_keys = ['bills_summary']
-      customer_url_keys = ['customer']
-      account_url_keys = ['account']
+      feed_url_keys = [:events, :magnitude]
+      bills_url_keys = [:bills_summary]
+      customer_url_keys = [:customer]
+      account_url_keys = [:account]
       @api_routes.add_entrypoint(path: :ssl, entrypoint: :revoke_token, url: links[:revoke_token][:href])
       @api_routes.add_entrypoint(path: :ssl, entrypoint: :query, url: links[:ghostflame][:href])
       @api_routes.add_entrypoint(path: :ssl, entrypoint: :feed, url: find_url(feed_url_keys, links))
@@ -169,7 +169,7 @@ module NubankSdk
       links_keys = list.keys
 
       keys.each do |url_key|
-        return list[url_key]['href'] if links_keys.include?(url_key)
+        return list[url_key][:href] if links_keys.include?(url_key)
       end
       ''
     end
