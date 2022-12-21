@@ -20,6 +20,10 @@ task :start_new_release do
   sh "git commit -m \"build(version): :bookmark: bump #{bump}\""
   sh 'git push'
 
+  Rake::Task[:generate_git_tag].invoke
+end
+
+task :generate_git_tag do
   version = NubankSdk::VERSION
   version_tag = "v#{version}"
   sh "git tag -a #{version_tag} -m \"Version #{version}\""
