@@ -12,7 +12,8 @@ SimpleCov.start do
   enable_coverage :branch
   primary_coverage :branch
   track_files "lib/**/*.rb"
-  add_filter "/spec/"
+  add_filter "spec/"
+  add_filter "lib/nubank_sdk/version.rb"
 end
 SimpleCov.at_exit do
   puts "Coverage done"
