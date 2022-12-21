@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 
 RSpec.describe NubankSdk::Client do

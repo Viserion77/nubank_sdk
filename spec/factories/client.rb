@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
-  factory :https_connection, class: NubankSdk::Client::HTTPS do
+  factory :https_connection, class: 'NubankSdk::Client::HTTPS' do
     transient do
       encoded_certificate { build(:encoded_certificate) }
       connection_adapter { nil }

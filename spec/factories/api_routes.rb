@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
-  factory :api_routes, class: NubankSdk::ApiRoutes do
+  factory :api_routes, class: 'NubankSdk::ApiRoutes' do
     transient do
       paths { {} }
     end

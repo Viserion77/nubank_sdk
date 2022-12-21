@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe NubankSdk::ApiRoutes do
   let(:stubs)  { Faraday::Adapter::Test::Stubs.new }
   let(:uri) { described_class::DISCOVERY_URI }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'securerandom'
 
 module NubankSdk
@@ -67,10 +69,9 @@ module NubankSdk
     # @return [File] the certificate file
     def exchange_certs(email_code, password)
       response = default_connection.post(@gen_certificate_path, payload(password).merge({
-          code: email_code,
-          'encrypted-code': @encrypted_code
-        })
-      )
+                                                                                          code: email_code,
+                                                                                          'encrypted-code': @encrypted_code
+                                                                                        }))
 
       response_data = Client.get_body(response)
       certificate.process_decoded(key, response_data[:certificate])
@@ -89,12 +90,12 @@ module NubankSdk
       parsed = {}
 
       chunks.each do |chunk|
-          key, value = chunk.split('=')
-          key = key.strip().gsub(' ', '_').gsub('-', '_').to_sym
-          value = value.gsub('"', '')
-          parsed[key] = value
+        key, value = chunk.split('=')
+        key = key.strip.gsub(' ', '_').gsub('-', '_').to_sym
+        value = value.gsub('"', '')
+        parsed[key] = value
       end
-    
+
       parsed
     end
 
@@ -110,7 +111,7 @@ module NubankSdk
         password: password,
         public_key: key.public_key.to_pem,
         device_id: @device_id,
-        model: "NubankSdk Client (#@device_id)",
+        model: "NubankSdk Client (#{@device_id})"
       }
     end
 
@@ -145,7 +146,7 @@ module NubankSdk
     #
     # @return [NubankSdk::ApiRoutes] the api routes with the new links
     def update_api_routes(links)
-      feed_url_keys = [:events, :magnitude]
+      feed_url_keys = %i[events magnitude]
       bills_url_keys = [:bills_summary]
       customer_url_keys = [:customer]
       account_url_keys = [:account]

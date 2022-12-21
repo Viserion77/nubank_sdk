@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
-  factory :certificate, class: OpenSSL::X509::Certificate do
+  factory :certificate, class: 'OpenSSL::X509::Certificate' do
     transient do
       key { OpenSSL::PKey::RSA.new 2048 }
     end
@@ -27,12 +29,12 @@ FactoryBot.define do
           )
         )
         cert.add_extension(ef.create_extension('subjectKeyIdentifier', 'hash'))
-        cert.sign(transients.key, OpenSSL::Digest::SHA256.new)
+        cert.sign(transients.key, OpenSSL::Digest.new('SHA256'))
       end
     end
   end
 
-  factory :encoded_certificate, class: OpenSSL::PKCS12 do
+  factory :encoded_certificate, class: 'OpenSSL::PKCS12' do
     transient do
       key { OpenSSL::PKey::RSA.new 2048 }
       certificate { build(:certificate, key: key) }
