@@ -16,6 +16,7 @@ GEM
     ast (2.4.2)
     concurrent-ruby (1.1.10)
     diff-lcs (1.5.0)
+    docile (1.4.0)
     factory_bot (4.8.2)
       activesupport (>= 3.0.0)
     faraday (2.7.2)
@@ -63,6 +64,15 @@ GEM
       rubocop (~> 1.33)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
+    simplecov (0.21.2)
+      docile (~> 1.1)
+      simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
+    simplecov-html (0.12.3)
+    simplecov-json (0.2.3)
+      json
+      simplecov
+    simplecov_json_formatter (0.1.4)
     thread_safe (0.3.6)
     tzinfo (1.2.10)
       thread_safe (~> 0.1)
@@ -83,6 +93,8 @@ DEPENDENCIES
   rspec (~> 3.0)
   rubocop (~> 1.41.0)
   rubocop-rspec (~> 2.16.0)
+  simplecov (~> 0.21.2)
+  simplecov-json (~> 0.2.3)
   yard (~> 0.9.12)
 
 BUNDLED WITH

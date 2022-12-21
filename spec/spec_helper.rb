@@ -1,5 +1,24 @@
 # frozen_string_literal: true
 
+require 'simplecov'
+require "simplecov-json"
+
+SimpleCov.minimum_coverage 100
+SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new([
+  SimpleCov::Formatter::HTMLFormatter,
+  SimpleCov::Formatter::JSONFormatter
+])
+SimpleCov.start do
+  enable_coverage :branch
+  primary_coverage :branch
+  track_files "lib/**/*.rb"
+  add_filter "/spec/"
+end
+SimpleCov.at_exit do
+  puts "Coverage done"
+  SimpleCov.result.format!
+end
+
 require 'bundler/setup'
 require 'nubank_sdk'
 require 'factory_bot'

@@ -31,6 +31,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop-rspec', '~> 2.16.0'
   spec.add_development_dependency 'yard', '~> 0.9.12'
   spec.add_development_dependency 'gem-release', '~> 2.2.2'
+  spec.add_development_dependency 'simplecov', '~> 0.21.2'
+  spec.add_development_dependency 'simplecov-json', '~> 0.2.3'
 
   spec.add_dependency 'faraday', '~> 2.7.1'
   spec.add_dependency 'json', '~> 2.3'
