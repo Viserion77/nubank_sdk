@@ -1,5 +1,2 @@
 require:
   - rubocop-rspec
-
-Style/BracesAroundHashParameters:
-  Enabled: false

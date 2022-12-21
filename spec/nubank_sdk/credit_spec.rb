@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe NubankSdk::Credit do
   subject(:credit) do
     described_class.new(

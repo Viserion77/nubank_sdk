@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'faraday'
 require 'json'
 
 module NubankSdk
   class ApiRoutes
-    DISCOVERY_URI = 'https://prod-s0-webapp-proxy.nubank.com.br'.freeze
+    DISCOVERY_URI = 'https://prod-s0-webapp-proxy.nubank.com.br'
     PROXY_PATHS = {
       default: '/api/discovery',
       app: '/api/app/discovery',
@@ -28,7 +30,7 @@ module NubankSdk
     # @param [Symbol] type, :splitted or :full
     #
     # @return [String, Array]
-    def entrypoint(path: :default, entrypoint:, type: :full)
+    def entrypoint(entrypoint:, path: :default, type: :full)
       discovery(path) if @url_discovery_map[path].nil?
 
       url = @url_discovery_map[path][entrypoint]
@@ -47,7 +49,7 @@ module NubankSdk
     # @param [String] url
     #
     # @return [Hash]
-    def add_entrypoint(path: :default, entrypoint:, url:)
+    def add_entrypoint(entrypoint:, url:, path: :default)
       path_map = @url_discovery_map[path] || {}
       path_map[entrypoint] = url
 

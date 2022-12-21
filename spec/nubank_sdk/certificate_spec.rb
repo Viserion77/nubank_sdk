@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe NubankSdk::Certificate do
   subject(:certificate_instance) { described_class.new(cpf) }
 
@@ -8,6 +10,8 @@ RSpec.describe NubankSdk::Certificate do
   let(:certificate_path) { "#{NubankSdk::Certificate::FILES_PATH}#{cpf}.p12" }
 
   before { clear_certifications_folder }
+
+  after { clear_certifications_folder }
 
   describe '#process_decoded' do
     it 'creates a new file.p12' do
@@ -24,8 +28,6 @@ RSpec.describe NubankSdk::Certificate do
       expect(certificate_instance.encoded).to be_a(OpenSSL::PKCS12)
     end
   end
-
-  after { clear_certifications_folder }
 
   def clear_certifications_folder
     File.delete(certificate_path) if File.exist?(certificate_path)

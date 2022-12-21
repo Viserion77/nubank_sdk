@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe NubankSdk::Account do
   subject(:account) do
     described_class.new(

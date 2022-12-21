@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'openssl'
 
 module NubankSdk
   class Certificate
-    FILES_PATH = './certificates/'.freeze
+    FILES_PATH = './certificates/'
 
     #
     # Controller of certifications

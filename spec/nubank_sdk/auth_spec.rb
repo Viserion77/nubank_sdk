@@ -1,17 +1,21 @@
-RSpec.describe NubankSdk::Auth do
-  subject(:auth) { described_class.new(cpf: cpf, device_id: '909876543210', connection_adapter: [:test, stubs], api_routes: api_routes) }
+# frozen_string_literal: true
 
-  let(:cpf) { '1235678909'}
+RSpec.describe NubankSdk::Auth do
+  subject(:auth) do
+    described_class.new(cpf: cpf, device_id: '909876543210', connection_adapter: [:test, stubs], api_routes: api_routes)
+  end
+
+  let(:cpf) { '1235678909' }
   let(:stubs) { Faraday::Adapter::Test::Stubs.new }
   let(:key) { OpenSSL::PKey::RSA.new 2048 }
   let(:dummy_certification) { build :certificate, key: key }
   let(:api_routes) do
     build(:api_routes, paths: {
-      app: {
-        token: 'https://aa.aa/api/token_teste',
-        gen_certificate: 'https://aa.aa/api/login_teste'
-      }
-    })
+            app: {
+              token: 'https://aa.aa/api/token_teste',
+              gen_certificate: 'https://aa.aa/api/login_teste'
+            }
+          })
   end
   let(:https_connection) { build(:https_connection, connection_adapter: [:test, stubs]) }
 
@@ -35,7 +39,7 @@ RSpec.describe NubankSdk::Auth do
   describe '#request_email_code' do
     it 'returns a valid token' do
       stubs.post('https://aa.aa/api/login_teste') do
-        [200, {'WWW-Authenticate': 'sent_to=vi*@e*.*on'}, {}.to_json]
+        [200, { 'WWW-Authenticate': 'sent_to=vi*@e*.*on' }, {}.to_json]
       end
 
       email = auth.request_email_code('dracarys')
@@ -46,7 +50,7 @@ RSpec.describe NubankSdk::Auth do
   describe '#exchange_certs' do
     it 'returns a valid token' do
       stubs.post('https://aa.aa/api/login_teste') do
-        [200, {}, {certificate: dummy_certification}.to_json]
+        [200, {}, { certificate: dummy_certification }.to_json]
       end
       allow(auth.certificate).to receive(:save).and_return(true)
 

@@ -4,4 +4,4 @@ language: ruby
 cache: bundler
 rvm:
   - 2.3.3
-before_install: gem install bundler -v 1.17.3
+before_install: gem install bundler -v 2.3.26
