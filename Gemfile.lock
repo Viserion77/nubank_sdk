@@ -70,7 +70,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.17)
+  bundler (~> 2.3.26)
   factory_bot (~> 4.8.2)
   nubank_sdk!
   rake (~> 10.0)
@@ -80,4 +80,4 @@ DEPENDENCIES
   yard (~> 0.9.12)
 
 BUNDLED WITH
-   1.17.3
+   2.3.26
