@@ -56,9 +56,19 @@ module NubankSdk
     #
     # @return [File]
     def save(p12)
+      create_folder
+
       File.open("#{FILES_PATH}#{@cpf}.p12", 'wb') do |file|
         file.write p12.to_der
       end
+    end
+
+    # @!visibility private
+    # Create certificates folder
+    #
+    # @return [File]
+    def create_folder
+      Dir.mkdir(FILES_PATH) unless Dir.exist?(FILES_PATH)
     end
 
     # @!visibility private
