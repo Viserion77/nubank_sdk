@@ -3,6 +3,9 @@
 require 'openssl'
 
 module NubankSdk
+  #
+  # Controller of certifications
+  #
   class Certificate
     FILES_PATH = './certificates/'
 

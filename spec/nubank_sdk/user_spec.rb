@@ -2,15 +2,16 @@
 
 RSpec.describe NubankSdk::User do
   subject(:user) { described_class.new(cpf: '12345678909') }
-  
+
   describe '#auth' do
     it 'returns an instance of NubankSdk::Auth' do
       expect(user.auth).to be_an_instance_of(NubankSdk::Auth)
     end
   end
 
-  context 'when the user is certificated' do    
+  context 'when the user is certificated' do
     let(:dummy_certificate) { build(:encoded_certificate) }
+
     before do
       certificate_mock = instance_double('certificate', encoded: dummy_certificate)
       allow(NubankSdk::Certificate).to receive(:new).and_return(certificate_mock)

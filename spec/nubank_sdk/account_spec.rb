@@ -17,12 +17,12 @@ RSpec.describe NubankSdk::Account do
   end
 
   describe '#balance' do
+    let(:stub_response) do
+      { data: { viewer: { savingsAccount: { currentSavingsBalance: { netAmount: 100 } } } } }.to_json
+    end
+
     it 'returns the account balance' do
-      stubs.post('https://aa.aa/api/ghostflame_teste') do
-        [200,
-         {},
-         { data: { viewer: { savingsAccount: { currentSavingsBalance: { netAmount: 100 } } } } }.to_json]
-      end
+      stubs.post('https://aa.aa/api/ghostflame_teste') { [200, {}, stub_response] }
 
       expect(account.balance).to eq(100)
     end

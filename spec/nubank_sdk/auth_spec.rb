@@ -2,10 +2,10 @@
 
 RSpec.describe NubankSdk::Auth do
   subject(:auth) do
-    described_class.new(cpf: cpf, device_id: '909876543210', connection_adapter: [:test, stubs], api_routes: api_routes)
+    described_class.new(cpf: '1235678909', device_id: '909876543210', connection_adapter: [:test, stubs],
+                        api_routes: api_routes)
   end
 
-  let(:cpf) { '1235678909' }
   let(:stubs) { Faraday::Adapter::Test::Stubs.new }
   let(:key) { OpenSSL::PKey::RSA.new 2048 }
   let(:dummy_certification) { build :certificate, key: key }
@@ -30,7 +30,7 @@ RSpec.describe NubankSdk::Auth do
   describe '#authenticate_with_certificate' do
     it 'returns a valid token' do
       stubs.post('https://aa.aa/api/token_teste') do
-        [200, {}, { access_token: '1234567890', _links: {revoke_token:{},ghostflame:{}} }.to_json]
+        [200, {}, { access_token: '1234567890', _links: { revoke_token: {}, ghostflame: {} } }.to_json]
       end
 
       auth.authenticate_with_certificate('dracarys')
@@ -50,11 +50,14 @@ RSpec.describe NubankSdk::Auth do
   end
 
   describe '#exchange_certs' do
+    before do
+      allow(auth.certificate)
+    end
+
     it 'returns a valid token' do
       stubs.post('https://aa.aa/api/login_teste') do
         [200, {}, { certificate: dummy_certification }.to_json]
       end
-      allow(auth.certificate)
 
       auth.exchange_certs('77', 'dracarys')
       expect(auth.certificate).to have_received(:process_decoded).once

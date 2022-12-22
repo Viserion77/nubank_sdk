@@ -4,6 +4,9 @@ require 'faraday'
 require 'json'
 
 module NubankSdk
+  #
+  # Controller for the ApiRoutes class
+  #
   class ApiRoutes
     DISCOVERY_URI = 'https://prod-s0-webapp-proxy.nubank.com.br'
     PROXY_PATHS = {
