@@ -64,5 +64,24 @@ RSpec.describe NubankSdk::Client do
         expect(client.headers).to eq({ 'X-Custom-Header' => 'custom' })
       end
     end
+
+    describe '#get' do
+      it 'gets a request to the given path' do
+        stubs.get('/foo') { [200, {}] }
+
+        response = client.get('/foo')
+
+        expect(response.status).to eq(200)
+      end
+
+      it 'gets a request with the given headers' do
+        stubs.get('/foo') { [200, {}] }
+        client.headers = { 'X-Custom-Header' => 'custom' }
+
+        client.get('/foo')
+
+        expect(client.headers).to eq({ 'X-Custom-Header' => 'custom' })
+      end
+    end
   end
 end

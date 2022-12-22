@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module NubankSdk
+  #
+  # Returns the account statement
+  #
   class Account
     #
     # Returns the account statement

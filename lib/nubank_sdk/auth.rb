@@ -3,6 +3,9 @@
 require 'securerandom'
 
 module NubankSdk
+  #
+  # Auth method to connect with the nubank api
+  #
   class Auth
     attr_reader :refresh_token, :refresh_before, :access_token
 
@@ -41,9 +44,8 @@ module NubankSdk
 
       response_hash = Client.get_body(response)
 
-      @refresh_token = response_hash[:refresh_token]
-      @refresh_before = response_hash[:refresh_before]
-      @access_token = response_hash[:access_token]
+      @refresh_token, @refresh_before, @access_token = response_hash.values_at(:refresh_token, :refresh_before,
+                                                                               :access_token)
 
       update_api_routes(response_hash[:_links])
     end
@@ -68,10 +70,9 @@ module NubankSdk
     #
     # @return [File] the certificate file
     def exchange_certs(email_code, password)
-      response = default_connection.post(@gen_certificate_path, payload(password).merge({
-                                                                                          code: email_code,
-                                                                                          'encrypted-code': @encrypted_code
-                                                                                        }))
+      new_payload = payload(password)
+                    .merge({ code: email_code, 'encrypted-code': @encrypted_code })
+      response = default_connection.post(@gen_certificate_path, new_payload)
 
       response_data = Client.get_body(response)
       certificate.process_decoded(key, response_data[:certificate])
@@ -146,16 +147,12 @@ module NubankSdk
     #
     # @return [NubankSdk::ApiRoutes] the api routes with the new links
     def update_api_routes(links)
-      feed_url_keys = %i[events magnitude]
-      bills_url_keys = [:bills_summary]
-      customer_url_keys = [:customer]
-      account_url_keys = [:account]
       @api_routes.add_entrypoint(path: :ssl, entrypoint: :revoke_token, url: links[:revoke_token][:href])
       @api_routes.add_entrypoint(path: :ssl, entrypoint: :query, url: links[:ghostflame][:href])
-      @api_routes.add_entrypoint(path: :ssl, entrypoint: :feed, url: find_url(feed_url_keys, links))
-      @api_routes.add_entrypoint(path: :ssl, entrypoint: :bills, url: find_url(bills_url_keys, links))
-      @api_routes.add_entrypoint(path: :ssl, entrypoint: :customer, url: find_url(customer_url_keys, links))
-      @api_routes.add_entrypoint(path: :ssl, entrypoint: :account, url: find_url(account_url_keys, links))
+      @api_routes.add_entrypoint(path: :ssl, entrypoint: :feed, url: find_url(%i[events magnitude], links))
+      @api_routes.add_entrypoint(path: :ssl, entrypoint: :bills, url: find_url([:bills_summary], links))
+      @api_routes.add_entrypoint(path: :ssl, entrypoint: :customer, url: find_url([:customer], links))
+      @api_routes.add_entrypoint(path: :ssl, entrypoint: :account, url: find_url([:account], links))
       @api_routes
     end
 

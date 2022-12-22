@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module NubankSdk
+  #
+  # Controller of user actions in nubank
+  #
   class User
     #
     # Controller of user actions in nubank

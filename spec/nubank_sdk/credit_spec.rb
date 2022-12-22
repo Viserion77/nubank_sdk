@@ -19,9 +19,7 @@ RSpec.describe NubankSdk::Credit do
   describe '#balances' do
     it 'returns the credit balances' do
       stubs.get('https://aa.aa/api/ghostflame_teste') do
-        [200,
-         {},
-         { account: { balances: { credit: 100 } } }.to_json]
+        [200, {}, { account: { balances: { credit: 100 } } }.to_json]
       end
 
       expect(credit.balances).to eq({ credit: 100 })

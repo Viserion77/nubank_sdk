@@ -2,10 +2,10 @@
 
 RSpec.describe NubankSdk::Auth do
   subject(:auth) do
-    described_class.new(cpf: cpf, device_id: '909876543210', connection_adapter: [:test, stubs], api_routes: api_routes)
+    described_class.new(cpf: '1235678909', device_id: '909876543210', connection_adapter: [:test, stubs],
+                        api_routes: api_routes)
   end
 
-  let(:cpf) { '1235678909' }
   let(:stubs) { Faraday::Adapter::Test::Stubs.new }
   let(:key) { OpenSSL::PKey::RSA.new 2048 }
   let(:dummy_certification) { build :certificate, key: key }
@@ -20,15 +20,17 @@ RSpec.describe NubankSdk::Auth do
   let(:https_connection) { build(:https_connection, connection_adapter: [:test, stubs]) }
 
   before do
-    allow(auth).to receive(:generate_key).and_return(key)
-    allow(auth).to receive(:ssl_connection).and_return(https_connection)
-    allow(auth).to receive(:update_api_routes)
+    stub_certificate = Struct.new(:encoded, :process_decoded).new(dummy_certification, nil)
+    allow(stub_certificate).to receive(:process_decoded).and_return(nil)
+    allow(NubankSdk::Certificate).to receive(:new).and_return(stub_certificate)
+    allow(OpenSSL::PKey::RSA).to receive(:new).and_return(key)
+    allow(NubankSdk::Client::HTTPS).to receive(:new).and_return(https_connection)
   end
 
   describe '#authenticate_with_certificate' do
     it 'returns a valid token' do
       stubs.post('https://aa.aa/api/token_teste') do
-        [200, {}, { access_token: '1234567890' }.to_json]
+        [200, {}, { access_token: '1234567890', _links: { revoke_token: {}, ghostflame: {} } }.to_json]
       end
 
       auth.authenticate_with_certificate('dracarys')
@@ -48,14 +50,23 @@ RSpec.describe NubankSdk::Auth do
   end
 
   describe '#exchange_certs' do
+    before do
+      allow(auth.certificate)
+    end
+
     it 'returns a valid token' do
       stubs.post('https://aa.aa/api/login_teste') do
         [200, {}, { certificate: dummy_certification }.to_json]
       end
-      allow(auth.certificate).to receive(:save).and_return(true)
 
       auth.exchange_certs('77', 'dracarys')
-      expect(auth.certificate).to have_received(:save).once
+      expect(auth.certificate).to have_received(:process_decoded).once
+    end
+  end
+
+  describe '#generate_device_id' do
+    it 'returns a valid device id' do
+      expect(auth.send(:generate_device_id).length).to eq(12)
     end
   end
 end

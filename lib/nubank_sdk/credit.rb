@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module NubankSdk
+  #
+  # Returns the credit statement
+  #
   class Credit
     #
     # Returns the credit statement
