@@ -32,5 +32,22 @@ module NubankSdk
       data = NubankSdk::Client.get_body(response)
       data[:data][:viewer][:savingsAccount][:currentSavingsBalance][:netAmount]
     end
+
+    #
+    # Returns the account feed
+    #
+    def feed
+      query_url = @api_routes.entrypoint(path: :ssl, entrypoint: :query)
+
+      response = @connection.post(
+        query_url, {
+          'variables': {},
+          'query': NubankSdk::Utils.read_graphql_query('account', 'feed')
+        }
+      )
+
+      data = NubankSdk::Client.get_body(response)
+      data[:data][:viewer][:savingsAccount][:feed]
+    end
   end
 end
