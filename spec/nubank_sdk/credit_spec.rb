@@ -13,7 +13,10 @@ RSpec.describe NubankSdk::Credit do
     build(:https_connection, connection_adapter: [:test, stubs])
   end
   let(:api_routes) do
-    build(:api_routes, paths: { ssl: { account: 'https://aa.aa/api/ghostflame_teste' } })
+    build(:api_routes, paths: { ssl: {
+            account: 'https://aa.aa/api/ghostflame_teste',
+            feed: 'https://aa.aa/api/ghostflame_teste'
+          } })
   end
 
   describe '#balances' do
@@ -23,6 +26,16 @@ RSpec.describe NubankSdk::Credit do
       end
 
       expect(credit.balances).to eq({ credit: 100 })
+    end
+  end
+
+  describe '#feed' do
+    it 'returns the credit feed' do
+      stubs.get('https://aa.aa/api/ghostflame_teste') do
+        [200, {}, { events: [{ amount: 100 }] }.to_json]
+      end
+
+      expect(credit.feed).to eq([{ amount: 100 }])
     end
   end
 end

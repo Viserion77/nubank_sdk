@@ -27,5 +27,18 @@ module NubankSdk
 
       response_hash[:account][:balances]
     end
+
+    #
+    # Returns the credit feed
+    #
+    # @return [Array<Hash>] the credit feed
+    def feed
+      feed_url = @api_routes.entrypoint(path: :ssl, entrypoint: :feed)
+
+      response = @connection.get(feed_url)
+
+      data = Client.get_body(response)
+      data[:events]
+    end
   end
 end
