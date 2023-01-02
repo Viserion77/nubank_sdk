@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module NubankSdk
+  #
+  # Controller of user actions in nubank
+  #
   class User
     #
     # Controller of user actions in nubank
@@ -17,7 +20,7 @@ module NubankSdk
     #
     # @return [NubankSdk::Auth]
     def auth
-      @auth ||= NubankSdk::Auth.new(
+      @auth ||= Auth.new(
         cpf: @cpf,
         api_routes: api_routes,
         connection_adapter: @connection_adapter
@@ -29,7 +32,7 @@ module NubankSdk
     #
     # @return [NubankSdk::Account]
     def account
-      @account ||= NubankSdk::Account.new(connection: connection, api_routes: api_routes)
+      @account ||= Account.new(connection: connection, api_routes: api_routes)
     end
 
     #
@@ -37,7 +40,7 @@ module NubankSdk
     #
     # @return [NubankSdk::Credit]
     def credit
-      @credit ||= NubankSdk::Credit.new(connection: connection, api_routes: api_routes)
+      @credit ||= Credit.new(connection: connection, api_routes: api_routes)
     end
 
     #
@@ -45,7 +48,7 @@ module NubankSdk
     #
     # @return [NubankSdk::ApiRoutes]
     def api_routes
-      @api_routes ||= NubankSdk::ApiRoutes.new
+      @api_routes ||= ApiRoutes.new
     end
 
     private

@@ -15,6 +15,7 @@
     "account",
     "github",
     "user",
-    "credit"
+    "credit",
+    "utils"
   ]
 }

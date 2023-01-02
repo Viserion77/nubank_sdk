@@ -4,6 +4,9 @@ require 'faraday'
 require 'json'
 
 module NubankSdk
+  #
+  # Wrapper for Faraday::Connection
+  #
   module Client
     #
     # Parse the response body symbolizing keys
@@ -15,6 +18,9 @@ module NubankSdk
       JSON.parse(response.body, symbolize_names: true)
     end
 
+    #
+    # create a new connection with the given url in Faraday
+    #
     class HTTP
       #
       # create a new connection with the given url in Faraday
@@ -53,6 +59,9 @@ module NubankSdk
       end
     end
 
+    #
+    # Create a new instance of Faraday::Connection with client certificate
+    #
     class HTTPS
       attr_accessor :headers
 

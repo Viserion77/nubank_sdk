@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module NubankSdk
+  #
+  # Returns the account statement
+  #
   class Account
     #
     # Returns the account statement
@@ -26,8 +29,26 @@ module NubankSdk
         }
       )
 
-      data = NubankSdk::Client.get_body(response)
+      data = Client.get_body(response)
       data[:data][:viewer][:savingsAccount][:currentSavingsBalance][:netAmount]
+    end
+
+    #
+    # Returns the account feed
+    #
+    # @return [Array<Hash>]
+    def feed
+      query_url = @api_routes.entrypoint(path: :ssl, entrypoint: :query)
+
+      response = @connection.post(
+        query_url, {
+          'variables': {},
+          'query': Utils.read_graphql_query('account', 'feed')
+        }
+      )
+
+      data = Client.get_body(response)
+      data[:data][:viewer][:savingsAccount][:feed]
     end
   end
 end
