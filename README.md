@@ -32,7 +32,7 @@ gem install nubank_sdk
 require 'nubank_sdk'
 
 # instance a nubank account object
-user = NubankSdk::User.new(cpf: '12345678909')
+user = NubankSdk::User.new cpf: '12345678909'
 password = 'dracarys'
 ```
 
@@ -57,7 +57,7 @@ user.auth.authenticate_with_certificate(password)
 get the account balance
 
 ```ruby
-user.account.balance # => 77.0
+account_balance = user.account.balance # => 77.0
 ```
 
 ## Development

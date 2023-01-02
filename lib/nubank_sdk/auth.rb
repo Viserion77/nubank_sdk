@@ -19,7 +19,7 @@ module NubankSdk
     def initialize(cpf:, device_id: nil, api_routes: nil, connection_adapter: nil)
       @cpf = cpf
       @device_id = device_id || generate_device_id
-      @api_routes = api_routes || NubankSdk::ApiRoutes.new
+      @api_routes = api_routes || ApiRoutes.new
 
       @connection_adapter = connection_adapter
     end
@@ -29,7 +29,7 @@ module NubankSdk
     #
     # @return [NubankSdk::Certificate] the certificate instance
     def certificate
-      @certificate ||= NubankSdk::Certificate.new(@cpf)
+      @certificate ||= Certificate.new(@cpf)
     end
 
     #
