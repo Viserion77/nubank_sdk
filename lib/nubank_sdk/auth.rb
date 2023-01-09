@@ -7,7 +7,7 @@ module NubankSdk
   # Auth method to connect with the nubank api
   #
   class Auth
-    attr_reader :refresh_token, :refresh_before, :access_token
+    attr_accessor :refresh_token, :refresh_before, :access_token
 
     #
     # Auth method to connect with the nubank api
