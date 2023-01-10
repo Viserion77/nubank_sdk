@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'graphql/account'
+
 module NubankSdk
   #
   # Returns the account statement
@@ -25,7 +27,7 @@ module NubankSdk
       response = @connection.post(
         query_url, {
           'variables': {},
-          'query': '{viewer {savingsAccount {currentSavingsBalance {netAmount}}}}'
+          'query': Graphql::Account::BALANCE
         }
       )
 
@@ -43,7 +45,7 @@ module NubankSdk
       response = @connection.post(
         query_url, {
           'variables': {},
-          'query': Utils.read_graphql_query('account', 'feed')
+          'query': Graphql::Account::FEED
         }
       )
 
