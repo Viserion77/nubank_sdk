@@ -20,6 +20,7 @@ task :start_new_release do
   sh "git commit -m \"build(version): :bookmark: bump #{bump}\""
   sh 'git push'
 
+  sh 'exec bash'
   Rake::Task[:generate_git_tag].invoke
 end
 
