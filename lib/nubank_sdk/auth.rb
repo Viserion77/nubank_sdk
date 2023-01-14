@@ -7,7 +7,7 @@ module NubankSdk
   # Auth method to connect with the nubank api
   #
   class Auth
-    attr_accessor :refresh_token, :refresh_before, :access_token
+    attr_accessor :refresh_token, :refresh_before, :access_token, :encrypted_code, :p_key
 
     #
     # Auth method to connect with the nubank api
@@ -22,6 +22,7 @@ module NubankSdk
       @api_routes = api_routes || ApiRoutes.new
 
       @connection_adapter = connection_adapter
+      @p_key = OpenSSL::PKey::RSA.new 2048
     end
 
     #
@@ -75,7 +76,7 @@ module NubankSdk
       response = default_connection.post(@gen_certificate_path, new_payload)
 
       response_data = Client.get_body(response)
-      certificate.process_decoded(key, response_data[:certificate])
+      certificate.process_decoded(@p_key, response_data[:certificate])
     end
 
     private
@@ -110,7 +111,7 @@ module NubankSdk
       {
         login: @cpf,
         password: password,
-        public_key: key.public_key.to_pem,
+        public_key: @p_key.public_key.to_pem,
         device_id: @device_id,
         model: "NubankSdk Client (#{@device_id})"
       }
@@ -130,14 +131,6 @@ module NubankSdk
         'login': @cpf,
         'password': password
       }
-    end
-
-    # @!visibility private
-    # Generates a new key for the certificate communication
-    #
-    # @return [OpenSSL::PKey::RSA] a new key
-    def generate_key
-      OpenSSL::PKey::RSA.new 2048
     end
 
     # @!visibility private
@@ -200,14 +193,6 @@ module NubankSdk
     # @return [Client::HTTPS] a new ssl connection
     def ssl_connection
       @ssl_connection ||= Client::HTTPS.new(certificate.encoded, @connection_adapter)
-    end
-
-    # @!visibility private
-    # return the key of the certificate communication
-    #
-    # @return [OpenSSL::PKey::RSA] the key of the certificate
-    def key
-      @key ||= generate_key
     end
 
     # @!visibility private
