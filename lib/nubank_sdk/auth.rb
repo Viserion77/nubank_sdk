@@ -64,7 +64,7 @@ module NubankSdk
       response_parsed = parse_authenticate_headers(response.headers['WWW-Authenticate'])
       @encrypted_code = response_parsed[:device_authorization_encrypted_code]
 
-      response_parsed[:sent_to]
+      response_parsed
     end
 
     #
