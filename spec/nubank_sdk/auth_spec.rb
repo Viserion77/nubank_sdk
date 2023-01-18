@@ -44,7 +44,7 @@ RSpec.describe NubankSdk::Auth do
         [200, { 'WWW-Authenticate': 'sent_to=vi*@e*.*on' }, {}.to_json]
       end
 
-      email = auth.request_email_code('dracarys')
+      email = auth.request_email_code('dracarys')[:sent_to]
       expect(email).to eq('vi*@e*.*on')
     end
   end
