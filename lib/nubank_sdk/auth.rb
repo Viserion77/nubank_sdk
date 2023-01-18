@@ -23,6 +23,7 @@ module NubankSdk
 
       @connection_adapter = connection_adapter
       @p_key = OpenSSL::PKey::RSA.new 2048
+      @encrypted_code = ''
     end
 
     #
