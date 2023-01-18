@@ -69,4 +69,10 @@ RSpec.describe NubankSdk::Auth do
       expect(auth.send(:generate_device_id).length).to eq(12)
     end
   end
+
+  describe '#def_encrypted_code=' do
+    it 'define a value to encripted code' do
+      expect(auth.send(:def_encrypted_code=, 123)).to eq(123)
+    end
+  end
 end

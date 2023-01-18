@@ -26,6 +26,10 @@ module NubankSdk
       @encrypted_code = ''
     end
 
+    def def_encrypted_code=(value)
+      @encrypted_code = value
+    end
+
     #
     # Return the instance of user certificate
     #
