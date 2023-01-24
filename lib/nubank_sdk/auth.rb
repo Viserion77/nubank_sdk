@@ -26,10 +26,6 @@ module NubankSdk
       @encrypted_code = ''
     end
 
-    def def_encrypted_code=(value)
-      @encrypted_code = value
-    end
-
     #
     # Return the instance of user certificate
     #
@@ -75,9 +71,12 @@ module NubankSdk
     # Verify communication with the nubank api
     #
     # @return [File] the certificate file
-    def exchange_certs(email_code, password)
+    def exchange_certs(email_code, password, custom_encryption = nil)
+      device_authorization_encrypted_code = custom_encryption || @encrypted_code || ''
+      raise Errors::InvalidEncryptedCode if device_authorization_encrypted_code.empty?
+
       new_payload = payload(password)
-                    .merge({ code: email_code, 'encrypted-code': @encrypted_code })
+                    .merge({ code: email_code, 'encrypted-code': device_authorization_encrypted_code })
       response = default_connection.post(@gen_certificate_path, new_payload)
 
       response_data = Client.get_body(response)

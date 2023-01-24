@@ -52,6 +52,7 @@ RSpec.describe NubankSdk::Auth do
   describe '#exchange_certs' do
     before do
       allow(auth.certificate)
+      auth.encrypted_code = '77'
     end
 
     it 'returns a valid token' do
@@ -62,17 +63,30 @@ RSpec.describe NubankSdk::Auth do
       auth.exchange_certs('77', 'dracarys')
       expect(auth.certificate).to have_received(:process_decoded).once
     end
+
+    it 'returns a valid token with custom encrypted_code' do
+      stubs.post('https://aa.aa/api/login_teste') do
+        [200, {}, { certificate: dummy_certification }.to_json]
+      end
+
+      auth.exchange_certs('77', 'dracarys', auth.encrypted_code)
+      expect(auth.certificate).to have_received(:process_decoded).once
+    end
+
+    it 'returns a error with custom encrypted_code' do
+      stubs.post('https://aa.aa/api/login_teste') do
+        [200, {}, { certificate: dummy_certification }.to_json]
+      end
+
+      auth.encrypted_code = nil
+
+      expect { auth.exchange_certs('77', 'dracarys') }.to raise_error(NubankSdk::Errors::InvalidEncryptedCode)
+    end
   end
 
   describe '#generate_device_id' do
     it 'returns a valid device id' do
       expect(auth.send(:generate_device_id).length).to eq(12)
-    end
-  end
-
-  describe '#def_encrypted_code=' do
-    it 'define a value to encripted code' do
-      expect(auth.send(:def_encrypted_code=, 123)).to eq(123)
     end
   end
 end
