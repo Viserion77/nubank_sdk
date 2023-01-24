@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    nubank_sdk (0.7.5)
+    nubank_sdk (0.7.6)
       faraday (~> 2.7.1)
       json (~> 2.3)
 
@@ -22,7 +22,7 @@ GEM
     e2mmap (0.1.0)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
-    faraday (2.7.3)
+    faraday (2.7.4)
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (3.0.2)
