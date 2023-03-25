@@ -4,12 +4,15 @@ on:
     branches: [ "develop" ]
   pull_request:
     branches: [ "develop" ]
+
 jobs:
   Rspec:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         ruby-version: ['3.0']
+    permissions:
+      checks: write
 
     steps:
       - uses: actions/checkout@v3
