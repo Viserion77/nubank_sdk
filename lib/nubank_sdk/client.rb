@@ -44,6 +44,7 @@ module NubankSdk
       def post(path, body)
         @connection.post(path) do |req|
           req.headers['Content-Type'] = 'application/json'
+          req.headers['X-Correlation-Id'] = 'WEB-APP.pewW9'
           req.body = body.to_json
         end
       end
