@@ -40,5 +40,22 @@ module NubankSdk
       data = Client.get_body(response)
       data[:events]
     end
+
+    #
+    # Returns the cards summary
+    #
+    # @return [Array<Hash>] the cards summary
+    def cards
+      # Esse dado vem do 'https://prod-s7-facade.nubank.com.br/api/customers/${id}/dashboard' porem isso retorna muito dado
+      # então vamos chumbar :D
+      customer_id = @api_routes.entrypoint(path: :ssl, entrypoint: :customer).split('/').last
+      cards_url = "https://prod-s7-mr-white.nubank.com.br/api/customers/#{customer_id}/card-summaries"
+
+      puts cards_url
+      response = @connection.get(cards_url)
+
+      data = Client.get_body(response)
+      data[:sections].map { |section| section[:cards] }.flatten
+    end
   end
 end
