@@ -27,3 +27,11 @@ task :generate_git_tag do
   sh "git tag -a #{version_tag} -m \"Version #{version}\""
   sh 'git push --tags'
 end
+
+task :build_local do
+  version = NubankSdk::VERSION
+  sh 'gem uninstall nubank_sdk'
+  sh 'rm nubank_sdk-*.gem' if File.exist?("nubank_sdk-#{version}.gem")
+  sh 'gem build nubank_sdk.gemspec'
+  sh "gem install --local nubank_sdk-#{version}.gem"
+end
