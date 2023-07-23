@@ -49,4 +49,14 @@ RSpec.describe NubankSdk::Credit do
       expect(credit.cards).to eq([{ amount: 100 }])
     end
   end
+
+  describe '#transaction_details' do
+    it 'returns the transaction details' do
+      stubs.get('https://prod-s7-showbillz.nubank.com.br/api/items/64bc3e6a-b286-4640-a1ad-922bd37a7e66/details') do
+        [200, {}, { amount: 100 }.to_json]
+      end
+
+      expect(credit.transaction_details('64bc3e6a-b286-4640-a1ad-922bd37a7e66')).to eq({ amount: 100 })
+    end
+  end
 end
