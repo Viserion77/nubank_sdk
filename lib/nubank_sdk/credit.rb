@@ -57,5 +57,19 @@ module NubankSdk
       data = Client.get_body(response)
       data[:sections].map { |section| section[:cards] }.flatten
     end
+
+    #
+    # Return details of a specific transaction from
+    # https://prod-s7-showbillz.nubank.com.br/api/items/#{transaction_id}/details
+    #
+    # @param [String] transaction_id
+    # @return [Hash] the transaction details
+    def transaction_details(transaction_id)
+      details_url = "https://prod-s7-showbillz.nubank.com.br/api/items/#{transaction_id}/details"
+
+      response = @connection.get(details_url)
+
+      Client.get_body(response)
+    end
   end
 end
