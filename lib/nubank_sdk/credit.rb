@@ -46,8 +46,8 @@ module NubankSdk
     #
     # @return [Array<Hash>] the cards summary
     def cards
-      # Esse dado vem do 'https://prod-s7-facade.nubank.com.br/api/customers/${id}/dashboard' porem isso retorna muito dado
-      # então vamos chumbar :D
+      # cards_url vem do 'https://prod-s7-facade.nubank.com.br/api/customers/${id}/dashboard'
+      # porem isso retorna muito dado... então vamos chumbar :D
       customer_id = @api_routes.entrypoint(path: :ssl, entrypoint: :customer).split('/').last
       cards_url = "https://prod-s7-mr-white.nubank.com.br/api/customers/#{customer_id}/card-summaries"
 

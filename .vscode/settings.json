@@ -16,6 +16,7 @@
     "github",
     "user",
     "credit",
-    "utils"
+    "utils",
+    "rubocop"
   ]
 }
