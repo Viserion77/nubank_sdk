@@ -15,7 +15,8 @@ RSpec.describe NubankSdk::Credit do
   let(:api_routes) do
     build(:api_routes, paths: { ssl: {
             account: 'https://aa.aa/api/ghostflame_teste',
-            feed: 'https://aa.aa/api/ghostflame_teste'
+            feed: 'https://aa.aa/api/ghostflame_teste',
+            customer: 'https://aa.aa/api/ghostflame_teste/customer_id'
           } })
   end
 
@@ -36,6 +37,16 @@ RSpec.describe NubankSdk::Credit do
       end
 
       expect(credit.feed).to eq([{ amount: 100 }])
+    end
+  end
+
+  describe '#cards' do
+    it 'returns the cards summary' do
+      stubs.get('https://prod-s7-mr-white.nubank.com.br/api/customers/customer_id/card-summaries') do
+        [200, {}, { sections: [{ cards: [{ amount: 100 }] }] }.to_json]
+      end
+
+      expect(credit.cards).to eq([{ amount: 100 }])
     end
   end
 end
